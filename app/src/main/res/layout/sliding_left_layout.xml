@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <View style="@style/slidingmenu_line_style" />
+    <RelativeLayout
+        android:id="@+id/sliding_left_layout_lajiaojiang"
+        style="@style/slidingmenu_item_style">
+        <TextView
+            android:text="辣椒酱"
+            style="@style/slidingmenu_text_style" />
+
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            android:visibility="visible"
+            style="@style/slidingmenu_imageview_style" />
+    </RelativeLayout>
+    <View style="@style/slidingmenu_line_style" />
+    <RelativeLayout
+        android:id="@+id/sliding_left_layout_jiangyancai"
+        style="@style/slidingmenu_item_style">
+        <TextView
+            android:text="酱腌菜"
+            style="@style/slidingmenu_text_style" />
+
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            style="@style/slidingmenu_imageview_style" />
+    </RelativeLayout>
+    <View style="@style/slidingmenu_line_style" />
+    <RelativeLayout
+        android:id="@+id/sliding_left_layout_doufuru"
+        style="@style/slidingmenu_item_style">
+        <TextView
+            android:text="豆腐乳"
+            style="@style/slidingmenu_text_style" />
+
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            style="@style/slidingmenu_imageview_style" />
+    </RelativeLayout>
+    <View style="@style/slidingmenu_line_style" />
+    <RelativeLayout
+        android:id="@+id/sliding_left_layout_shuichanfood"
+        style="@style/slidingmenu_item_style">
+        <TextView
+            android:text="水产零食"
+            style="@style/slidingmenu_text_style" />
+
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            style="@style/slidingmenu_imageview_style" />
+    </RelativeLayout>
+    <View style="@style/slidingmenu_line_style" />
+    <RelativeLayout
+        android:id="@+id/sliding_left_layout_yeshengjun"
+        style="@style/slidingmenu_item_style">
+        <TextView
+            android:text="野生菌"
+            style="@style/slidingmenu_text_style" />
+
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            style="@style/slidingmenu_imageview_style" />
+    </RelativeLayout>
+</LinearLayout>
