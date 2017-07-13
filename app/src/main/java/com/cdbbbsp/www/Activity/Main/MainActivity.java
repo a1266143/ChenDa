@@ -1,11 +1,9 @@
 package com.cdbbbsp.www.Activity.Main;
 
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,13 +19,7 @@ import com.cdbbbsp.www.Entity.Event.CartEvent;
 import com.cdbbbsp.www.Entity.Event.MenuEvent;
 import com.cdbbbsp.www.Entity.Event.Refresh;
 import com.cdbbbsp.www.Fragment.BaseFragment;
-import com.cdbbbsp.www.Fragment.DfrFragment;
-import com.cdbbbsp.www.Fragment.JycFragment;
-import com.cdbbbsp.www.Fragment.LjjFragment;
-import com.cdbbbsp.www.Fragment.SclsFragment;
-import com.cdbbbsp.www.Fragment.YsjFragment;
 import com.cdbbbsp.www.R;
-import com.cdbbbsp.www.Utils.StaticCode;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 
@@ -41,7 +33,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static android.view.View.GONE;
 
@@ -67,19 +58,19 @@ public class MainActivity extends SlidingActivity implements IView {
     private int currentFragment;
 
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void menuBeClick(MenuEvent menuEvent){//菜单按钮被点击
+    public void menuBeClick(MenuEvent menuEvent) {//菜单按钮被点击
         menu.toggle();
     }
 
     @Subscribe
-    public void cartBeClick(CartEvent cartEvent){//购物车被点击
-        Toast.makeText(this,"你点击了购物车",Toast.LENGTH_SHORT).show();
+    public void cartBeClick(CartEvent cartEvent) {//购物车被点击
+        Toast.makeText(this, "你点击了购物车", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this,CartActivity.class));
     }
 
     @Subscribe
-    public void refresh(Refresh refresh){//重新获取分类列表被点击
+    public void refresh(Refresh refresh) {//重新获取分类列表被点击
         tv_neterror.setVisibility(GONE);
         loadingLayout.setVisibility(View.VISIBLE);
         mPresenter.getAllCategory();
@@ -97,7 +88,7 @@ public class MainActivity extends SlidingActivity implements IView {
         getAllCategory();//请求分类
     }
 
-    private void getAllCategory(){
+    private void getAllCategory() {
         mPresenter.getAllCategory();
     }
 
@@ -108,19 +99,19 @@ public class MainActivity extends SlidingActivity implements IView {
     }
 
 
-    private void setEventBus(){
+    private void setEventBus() {
         EventBus.getDefault().register(this);
     }
 
-    private void setButterKnife(){
-        ButterKnife.bind(this,slidingMenuView);
+    private void setButterKnife() {
+        ButterKnife.bind(this, slidingMenuView);
     }
 
-    private void setDagger(){
-        DaggerMainComponent.builder().mainModule(new MainModule(getSlidingMenu(),this)).build().inject(this);
+    private void setDagger() {
+        DaggerMainComponent.builder().mainModule(new MainModule(getSlidingMenu(), this)).build().inject(this);
     }
 
-    private void findCurrentLayoutView(){
+    private void findCurrentLayoutView() {
         iv_menu = (ImageView) findViewById(R.id.activity_main_menu);
         loadingLayout = (LinearLayout) findViewById(R.id.activity_main_loadinglayout);
         tv_neterror = (TextView) findViewById(R.id.activity_main_tvNeterror);
@@ -135,14 +126,12 @@ public class MainActivity extends SlidingActivity implements IView {
         });
     }
 
-    private void showFragment(int position){
+    private void showFragment(int position) {
 
     }
 
-    private void setFragment(){
-        for(int i=0;i<bean.getData().size();i++){
-            getFragmentManager().beginTransaction().add(R.id.activity_main_content,new BaseFragment(bean.getData().get(i).getCategoryid())).commitAllowingStateLoss();
-        }
+    private void setFragment(String categoryid) {
+        getFragmentManager().beginTransaction().replace(R.id.activity_main_content, new BaseFragment(categoryid)).commitAllowingStateLoss();
 
     }
 
@@ -157,23 +146,24 @@ public class MainActivity extends SlidingActivity implements IView {
         iv_menu.setEnabled(true);
         loadingLayout.setVisibility(GONE);
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        if(bean!=null&&bean.getSuccess().equals("1")){
+        if (bean != null && bean.getSuccess().equals("1")) {
             this.bean = bean;
             menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
             loadingLayout.setVisibility(GONE);
             List<AllCategoryBean.CategoryBean> list = bean.getData();
-            if(list.size()!=0){
-                setFragment();
+            if (list.size() != 0) {
+                setFragment(bean.getData().get(0).getCategoryid());
             }
-            slidingListView.setAdapter(new MainModule.SlidingBaseAdapter(this,bean));
+            adapter = new MainModule.SlidingBaseAdapter(this, bean);
+            slidingListView.setAdapter(adapter);
             slidingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (adapter!=null){
+                    if (adapter != null) {
                         adapter.setSelecedPosition(position);
                         menu.toggle();
-                        if(MainActivity.this.bean!=null){
-                            setFragment();
+                        if (MainActivity.this.bean != null) {
+                            setFragment(bean.getData().get(position).getCategoryid());
                         }
                     }
                 }

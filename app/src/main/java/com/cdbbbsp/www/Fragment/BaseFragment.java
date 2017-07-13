@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
 
 /**
  * 创建人 xiaojun
@@ -92,11 +95,25 @@ public class BaseFragment extends Fragment implements IView{
                 holder.setOnClickListener(R.id.listitem_layout_add, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            Toast.makeText(getActivity(),"你点击了添加按钮",Toast.LENGTH_SHORT).show();
+                            StaticCode.staticList.add(goods);
                             notifyItemChanged(position);
                     }
                 });
                 ImageView img = holder.getView(R.id.listitem_layout_iv);
+                TextView number = holder.getView(R.id.listitem_layout_number);
+                int goodsNumber = 0;
+                for(int i=0;i<StaticCode.staticList.size();i++){
+                    AllGoodsBean.GoodsBean goodsBean = StaticCode.staticList.get(i);
+                    if(goodsBean.getGoodsid().equals(goods.getGoodsid())){
+                        goodsNumber++;
+                    }
+                }
+                if(goodsNumber==0){
+                    number.setVisibility(GONE);
+                }else{
+                    number.setVisibility(View.VISIBLE);
+                    number.setText(goodsNumber+"");
+                }
                 Log.e("地址","https://test.buoou.com/upload"+goods.getImgs().get(0).getPath());
                 Glide.with(getActivity()).load("https://test.buoou.com/upload"+goods.getImgs().get(0).getPath()).placeholder(R.mipmap.ic_launcher).into(img);
             }
@@ -108,7 +125,7 @@ public class BaseFragment extends Fragment implements IView{
 
     @Override
     public void getFirstData(AllGoodsBean bean) {
-        if(bean.getSuccess().equals("1")){//如果数据获取成功
+        if(bean!=null&&bean.getSuccess().equals("1")){//如果数据获取成功
             list = bean.getData();
             setRecyclerView();
         }
