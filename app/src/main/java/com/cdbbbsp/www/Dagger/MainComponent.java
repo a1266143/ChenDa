@@ -1,6 +1,6 @@
 package com.cdbbbsp.www.Dagger;
 
-import com.cdbbbsp.www.MainActivity;
+import com.cdbbbsp.www.Activity.Main.MainActivity;
 
 import javax.inject.Singleton;
 

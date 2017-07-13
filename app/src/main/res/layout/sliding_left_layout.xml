@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+              android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -10,9 +10,9 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher"
-        />
+    />
 
-    <View style="@style/slidingmenu_line_style" />
+    <!--<View style="@style/slidingmenu_line_style" />
     <RelativeLayout
         android:id="@+id/sliding_left_layout_lajiaojiang"
         style="@style/slidingmenu_item_style">
@@ -21,6 +21,7 @@
             style="@style/slidingmenu_text_style" />
 
         <ImageView
+            android:id="@+id/sliding_left_layout_iv1"
             android:src="@mipmap/ic_launcher"
             android:visibility="visible"
             style="@style/slidingmenu_imageview_style" />
@@ -34,6 +35,7 @@
             style="@style/slidingmenu_text_style" />
 
         <ImageView
+            android:id="@+id/sliding_left_layout_iv2"
             android:src="@mipmap/ic_launcher"
             style="@style/slidingmenu_imageview_style" />
     </RelativeLayout>
@@ -46,6 +48,7 @@
             style="@style/slidingmenu_text_style" />
 
         <ImageView
+            android:id="@+id/sliding_left_layout_iv3"
             android:src="@mipmap/ic_launcher"
             style="@style/slidingmenu_imageview_style" />
     </RelativeLayout>
@@ -58,6 +61,7 @@
             style="@style/slidingmenu_text_style" />
 
         <ImageView
+            android:id="@+id/sliding_left_layout_iv4"
             android:src="@mipmap/ic_launcher"
             style="@style/slidingmenu_imageview_style" />
     </RelativeLayout>
@@ -70,7 +74,14 @@
             style="@style/slidingmenu_text_style" />
 
         <ImageView
+            android:id="@+id/sliding_left_layout_iv5"
             android:src="@mipmap/ic_launcher"
             style="@style/slidingmenu_imageview_style" />
-    </RelativeLayout>
+    </RelativeLayout>-->
+
+    <ListView
+        android:id="@+id/sliding_left_layout_listview"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    </ListView>
 </LinearLayout>
