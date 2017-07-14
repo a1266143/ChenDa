@@ -9,19 +9,20 @@
         android:id="@+id/sliding_list_layout_iv"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:padding="8dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:visibility="gone"
         android:scaleType="fitCenter"
-    android:src="@mipmap/ic_launcher"/>
+    android:src="@drawable/ic_menu_item_selected"/>
 
     <TextView
         android:id="@+id/sliding_list_layout_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="17dp"
         android:layout_centerVertical="true"
-        android:textColor="@android:color/black"
+        android:textColor="#454545"
         android:layout_toLeftOf="@id/sliding_list_layout_iv"
     android:text="测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"/>
 

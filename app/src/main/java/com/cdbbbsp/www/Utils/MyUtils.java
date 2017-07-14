@@ -1,5 +1,13 @@
 package com.cdbbbsp.www.Utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.WindowManager;
+
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -26,6 +34,42 @@ public class MyUtils {
         if (mMyUtils == null)
             mMyUtils = new MyUtils();
         return mMyUtils;
+    }
+
+    public static void setTransparentStatusBar(Activity activity) {
+        //5.0及以上
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            View decorView = activity.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+            //4.4到5.0
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WindowManager.LayoutParams localLayoutParams = activity.getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+        }
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    //获取屏幕宽度或者高度
+    public int getScreenWidthOrHeight(Context context,boolean isWidth){
+        DisplayMetrics metric = new DisplayMetrics();
+        ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;     // 屏幕宽度（像素）
+        int height = metric.heightPixels;   // 屏幕高度（像素）
+        if(isWidth == true){
+            return width;
+        }
+        else
+            return height;
     }
 
     //get请求

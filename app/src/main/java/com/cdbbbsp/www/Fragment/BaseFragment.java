@@ -91,7 +91,7 @@ public class BaseFragment extends Fragment implements IView{
         mXRecyclerView.setAdapter(new CommonAdapter<AllGoodsBean.GoodsBean>(getActivity(),R.layout.listitem_layout,list) {
             @Override
             protected void convert(ViewHolder holder, final AllGoodsBean.GoodsBean goods, final int position) {
-                holder.setText(R.id.listitem_layout_tv,list.get(0).getTitle());
+                holder.setText(R.id.listitem_layout_tv,goods.getTitle());
                 holder.setOnClickListener(R.id.listitem_layout_add, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

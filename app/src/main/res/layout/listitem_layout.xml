@@ -24,20 +24,23 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:layout_below="@id/listitem_layout_iv"
-            android:background="@android:color/holo_green_dark"
-            android:padding="8dp">
+            >
+
+            <com.cdbbbsp.www.CustomView.LinearGradientView android:layout_width="match_parent"
+                                                           android:layout_height="52dp"/>
 
             <ImageButton
                 android:id="@+id/listitem_layout_add"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:scaleType="fitXY"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:padding="12dp"
+                android:src="@drawable/ic_home_add"/>
 
             <TextView
                 android:id="@+id/listitem_layout_tv"

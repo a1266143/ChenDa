@@ -14,6 +14,7 @@ import com.cdbbbsp.www.Entity.Event.CartEvent;
 import com.cdbbbsp.www.Entity.Event.MenuEvent;
 import com.cdbbbsp.www.Entity.Event.Refresh;
 import com.cdbbbsp.www.R;
+import com.cdbbbsp.www.Utils.MyUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,7 +48,7 @@ public class MainModule {
         menu.setShadowWidth(10);
         //menu.setShadowDrawable(R.drawable.shadow);
         // 设置滑动菜单视图的宽度
-        menu.setBehindOffset(500);
+        menu.setBehindOffset(MyUtils.getInstance().dip2px(context,200));
         // 设置渐入渐出效果的值
         menu.setFadeDegree(0.35f);
         return menu;
@@ -153,7 +154,7 @@ public class MainModule {
             if(position == selectedPosition){
                 viewHolder.iv.setVisibility(View.VISIBLE);
             }else{
-                viewHolder.iv.setVisibility(View.GONE);
+                viewHolder.iv.setVisibility(View.INVISIBLE);
             }
             viewHolder.tv.setText(bean.getData().get(position).getCategoryname());
             return convertView;

@@ -4,31 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context="com.cdbbbsp.www.Activity.Main.MainActivity">
 
     <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="match_parent"
+                  android:layout_height="wrap_content"
+                  android:clipChildren="false"
+                  android:layout_marginTop="-24dp"
                   android:orientation="vertical">
 
-        <View
+        <com.cdbbbsp.www.CustomView.LinearGradientView
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:background="#000"
-        />
+            android:layout_height="24dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="#000">
+            >
+
+            <com.cdbbbsp.www.CustomView.LinearGradientView android:layout_width="match_parent"
+                                                           android:layout_height="match_parent"/>
 
             <!-- 侧滑菜单 -->
             <ImageView
                 android:id="@+id/activity_main_menu"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:padding="8dp"
+                android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_nav_menu"/>
 
             <!-- 购物车 -->
             <ImageView
@@ -36,9 +40,9 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentRight="true"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/ic_launcher"/>
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_nav_bag"/>
 
             <TextView
                 android:layout_width="wrap_content"

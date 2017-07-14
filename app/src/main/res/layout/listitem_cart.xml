@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:padding="16dp"
-    android:layout_height="match_parent">
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
 
 
     <TextView
         android:id="@+id/listitem_cart_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:text="X16"
-        />
+        android:layout_centerVertical="true"
+        android:textColor="#2bb280"
+        android:text="16"
+        android:textSize="17dp"
+    />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:layout_centerVertical="true"
+              android:layout_toLeftOf="@id/listitem_cart_number"
+              android:textColor="#2bb280"
+              android:text="X"
+              android:textSize="16dp"/>
 
     <TextView
         android:id="@+id/listitem_cart_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_toLeftOf="@id/listitem_cart_number"
         android:layout_centerVertical="true"
-        android:text="将香菜"/>
+        android:textColor="#454545"
+        android:layout_toLeftOf="@id/listitem_cart_number"
+        android:text="将香菜"
+        android:textSize="17dp"/>
 
 </RelativeLayout>
