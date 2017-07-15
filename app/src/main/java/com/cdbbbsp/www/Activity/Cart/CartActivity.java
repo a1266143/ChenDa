@@ -1,22 +1,31 @@
-package com.cdbbbsp.www.Activity.Main;
+package com.cdbbbsp.www.Activity.Cart;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
 
+import com.cdbbbsp.www.Activity.InfoActivity;
 import com.cdbbbsp.www.Entity.Event.Bean.AllGoodsBean;
+import com.cdbbbsp.www.Entity.Event.FinishEvent;
 import com.cdbbbsp.www.R;
 import com.cdbbbsp.www.Utils.StaticCode;
+import com.chanven.lib.cptr.PtrClassicFrameLayout;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,15 +41,21 @@ import butterknife.OnClick;
  */
 public class CartActivity extends AppCompatActivity {
 
+    public static List<AllGoodsBean.GoodsBean> realList;
+    public static List<Integer> numberList;
     @BindView(R.id.activity_cart_xRecyclerview)
-    XRecyclerView recyclerView;
+    RecyclerView recyclerView;
     @OnClick(R.id.activity_cart_back)
     void back(){
         finish();
     }
     @OnClick(R.id.actvity_cart_next)
     void next(){
-
+        startActivity(new Intent(this, InfoActivity.class));
+    }
+    @Subscribe
+    public void getFinish(FinishEvent event){
+        finish();
     }
 
     @Override
@@ -48,10 +63,12 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTran();
         setContentView(R.layout.activity_cart);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
+
         Map<String,String> maps = new HashMap<>();
-        final List<AllGoodsBean.GoodsBean> realList = new ArrayList<>();
-        final List<Integer> numberList = new ArrayList<>();
+        realList = new ArrayList<>();
+        numberList = new ArrayList<>();
         for(int i=0;i<StaticCode.staticList.size();i++){
             AllGoodsBean.GoodsBean bean = StaticCode.staticList.get(i);
             maps.put(bean.getTitle(),bean.getGoodsid());
@@ -74,20 +91,30 @@ public class CartActivity extends AppCompatActivity {
             }
             numberList.add(realNumber);
         }
-        LinearLayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        manager.setAutoMeasureEnabled(true);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        //manager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(manager);
+        //recyclerView.setLoadingMoreEnabled(true);
+        //recyclerView.setRefreshProgressStyle(ProgressStyle.Pacman);
+        //recyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+
+
         recyclerView.setAdapter(new CommonAdapter<AllGoodsBean.GoodsBean>(this,R.layout.listitem_cart, realList) {
             @Override
             protected void convert(ViewHolder holder, AllGoodsBean.GoodsBean goodsBean, int position) {
                 holder.setText(R.id.listitem_cart_title,goodsBean.getTitle());
-                holder.setText(R.id.listitem_cart_number,""+numberList.get(position-1));
+                holder.setText(R.id.listitem_cart_number,""+numberList.get(position));
             }
         });
-        recyclerView.setPullRefreshEnabled(false);
+
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     private void setTran(){
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);

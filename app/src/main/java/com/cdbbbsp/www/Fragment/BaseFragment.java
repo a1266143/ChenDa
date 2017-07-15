@@ -2,10 +2,12 @@ package com.cdbbbsp.www.Fragment;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +18,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cdbbbsp.www.Activity.Image.ImageActivity;
+import com.cdbbbsp.www.Activity.Main.MainActivity;
 import com.cdbbbsp.www.Entity.Event.Bean.AllGoodsBean;
 import com.cdbbbsp.www.Fragment.Presenter.BaseFragmentPresenter;
 import com.cdbbbsp.www.Fragment.View.IView;
 import com.cdbbbsp.www.R;
 import com.cdbbbsp.www.Utils.MyUtils;
 import com.cdbbbsp.www.Utils.StaticCode;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -33,6 +38,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static android.view.View.GONE;
 
@@ -40,92 +46,110 @@ import static android.view.View.GONE;
  * 创建人 xiaojun
  * 创建时间 2017/7/13-9:24
  */
-public class BaseFragment extends Fragment implements IView{
+public class BaseFragment extends Fragment implements IView {
 
     private String categoryId;
     private int currentPage = 0;
     private List<AllGoodsBean.GoodsBean> list;
     private BaseFragmentPresenter mPresenter;
-    public BaseFragment(String categoryId){
+    private CommonAdapter<AllGoodsBean.GoodsBean> adapter;
+
+    public BaseFragment(String categoryId) {
         this.categoryId = categoryId;
         mPresenter = new BaseFragmentPresenter(this);
-        Log.e("xiaojun","调用了BaseFragment构造方法");
     }
 
     @BindView(R.id.layout_basefragment_xRecyclerView)
     XRecyclerView mXRecyclerView;
+    @BindView(R.id.layout_basefragment_netError)
+    TextView tv_neterror;
+    @OnClick(R.id.layout_basefragment_netError)
+    void netError(){
+        mPresenter.getData(categoryId, currentPage);
+        tv_neterror.setVisibility(GONE);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_basefragment,container,false);
-        ButterKnife.bind(this,view);
-       mPresenter.getData(categoryId,currentPage);
-
+        View view = inflater.inflate(R.layout.layout_basefragment, null, false);
+        ButterKnife.bind(this, view);
+        mPresenter.getData(categoryId, currentPage);
         mXRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mPresenter.getData(categoryId,currentPage);
+                mPresenter.getData(categoryId, currentPage);
             }
 
             @Override
             public void onLoadMore() {
-                mPresenter.loadMore(categoryId,currentPage++);
+                Log.e("执行了上拉加载更多","");
+                mPresenter.loadMore(categoryId, currentPage++);
             }
         });
+        mXRecyclerView.setLoadingMoreEnabled(true);
         //mPresenter.
         //setRecyclerView();
         return view;
     }
 
-
-    private void getData(){
-
-    }
-
-    private void setRecyclerView(){
-        GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
-        manager.setAutoMeasureEnabled(true);
-        StaggeredGridLayoutManager manager1 = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+    private void setRecyclerView() {
+        StaggeredGridLayoutManager manager1 = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        manager1.setAutoMeasureEnabled(true);
         mXRecyclerView.setLayoutManager(manager1);
-        mXRecyclerView.setAdapter(new CommonAdapter<AllGoodsBean.GoodsBean>(getActivity(),R.layout.listitem_layout,list) {
+        mXRecyclerView.setAdapter(adapter = new CommonAdapter<AllGoodsBean.GoodsBean>(getActivity(), R.layout.listitem_layout, list) {
             @Override
             protected void convert(ViewHolder holder, final AllGoodsBean.GoodsBean goods, final int position) {
-                holder.setText(R.id.listitem_layout_tv,goods.getTitle());
+                holder.setText(R.id.listitem_layout_tv, goods.getTitle());
                 holder.setOnClickListener(R.id.listitem_layout_add, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            StaticCode.staticList.add(goods);
-                            notifyItemChanged(position);
+                        StaticCode.staticList.add(goods);
+                        notifyItemChanged(position, 0);
+                    }
+                });
+                holder.setOnClickListener(R.id.listitem_layout_iv, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ImageActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(ImageActivity.TAG, goods);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.fade, R.anim.hold);
+                        ((MainActivity) getActivity()).blur();
                     }
                 });
                 ImageView img = holder.getView(R.id.listitem_layout_iv);
                 TextView number = holder.getView(R.id.listitem_layout_number);
                 int goodsNumber = 0;
-                for(int i=0;i<StaticCode.staticList.size();i++){
+                for (int i = 0; i < StaticCode.staticList.size(); i++) {
                     AllGoodsBean.GoodsBean goodsBean = StaticCode.staticList.get(i);
-                    if(goodsBean.getGoodsid().equals(goods.getGoodsid())){
+                    if (goodsBean.getGoodsid().equals(goods.getGoodsid())) {
                         goodsNumber++;
                     }
                 }
-                if(goodsNumber==0){
+                if (goodsNumber == 0) {
                     number.setVisibility(GONE);
-                }else{
+                } else {
                     number.setVisibility(View.VISIBLE);
-                    number.setText(goodsNumber+"");
+                    number.setText(goodsNumber + "");
                 }
-                Log.e("地址","https://test.buoou.com/upload"+goods.getImgs().get(0).getPath());
-                Glide.with(getActivity()).load("https://test.buoou.com/upload"+goods.getImgs().get(0).getPath()).placeholder(R.mipmap.ic_launcher).into(img);
+                Log.e("地址", "https://test.buoou.com/upload" + goods.getImgs().get(0).getPath());
+                Glide.with(getActivity()).load("https://test.buoou.com/upload" + goods.getImgs().get(0).getPath()).placeholder(R.mipmap.ic_launcher).into(img);
             }
 
         });
         mXRecyclerView.refreshComplete();
+        mXRecyclerView.setLoadingMoreEnabled(true);
+        mXRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+        mXRecyclerView.setRefreshProgressStyle(ProgressStyle.Pacman);
     }
 
 
     @Override
     public void getFirstData(AllGoodsBean bean) {
-        if(bean!=null&&bean.getSuccess().equals("1")){//如果数据获取成功
+        if (bean != null && bean.getSuccess().equals("1")) {//如果数据获取成功
             list = bean.getData();
             setRecyclerView();
         }
@@ -133,18 +157,24 @@ public class BaseFragment extends Fragment implements IView{
 
     @Override
     public void getFirstNetError() {
-        Log.e("xiaojun","网络错误");
+        Log.e("xiaojun", "网络错误");
+        mXRecyclerView.refreshComplete();
+        tv_neterror.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void loadMoreData(AllGoodsBean bean) {//加载更多数据
-
+        for (AllGoodsBean.GoodsBean goods : bean.getData()) {
+            list.add(goods);
+        }
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+        mXRecyclerView.loadMoreComplete();
     }
 
     @Override
     public void loadMoreError() {
-        if (currentPage!=0)
-            currentPage--;
-        Toast.makeText(getActivity(),"网络错误,请稍后再试",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "网络错误,请稍后再试", Toast.LENGTH_SHORT).show();
+        mXRecyclerView.loadMoreComplete();
     }
 }

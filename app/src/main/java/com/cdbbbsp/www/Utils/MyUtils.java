@@ -2,6 +2,7 @@ package com.cdbbbsp.www.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -14,6 +15,9 @@ import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -34,6 +38,21 @@ public class MyUtils {
         if (mMyUtils == null)
             mMyUtils = new MyUtils();
         return mMyUtils;
+    }
+
+    public static boolean isChinaPhoneLegal(String str) throws PatternSyntaxException {
+        String regExp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
+        Pattern p = Pattern.compile(regExp);
+        Matcher m = p.matcher(str);
+        return m.matches();
+    }
+
+    public static Bitmap getCapture(View view) {
+// 设置控件允许绘制缓存
+        view.setDrawingCacheEnabled(true);
+// 获取控件的绘制缓存（快照）
+        Bitmap bitmap = view.getDrawingCache();
+        return bitmap;
     }
 
     public static void setTransparentStatusBar(Activity activity) {
@@ -60,20 +79,19 @@ public class MyUtils {
     }
 
     //获取屏幕宽度或者高度
-    public int getScreenWidthOrHeight(Context context,boolean isWidth){
+    public int getScreenWidthOrHeight(Context context, boolean isWidth) {
         DisplayMetrics metric = new DisplayMetrics();
-        ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metric);
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metric);
         int width = metric.widthPixels;     // 屏幕宽度（像素）
         int height = metric.heightPixels;   // 屏幕高度（像素）
-        if(isWidth == true){
+        if (isWidth == true) {
             return width;
-        }
-        else
+        } else
             return height;
     }
 
     //get请求
-    public <T> void doGet(String url, Map<String, String> params, final NetCallback callback) {
+    public  void doGet(String url, Map<String, String> params, final NetCallback callback) {
         OkHttpUtils.get().params(params).url(url).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -88,8 +106,19 @@ public class MyUtils {
     }
 
     //post请求
-    public <T> void doPost(String url, Callback<T> callback, Map<String, String> params) {
-       // OkHttpUtils.post().params(params).url(url).build().execute(callback);
+    public  void doPost(String url, Map<String, String> params, final NetCallback callback) {
+        // OkHttpUtils.post().params(params).url(url).build().execute(callback);
+        OkHttpUtils.post().params(params).url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                callback.getError(e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                callback.getData(response);
+            }
+        });
     }
 
     public interface NetCallback {

@@ -1,5 +1,8 @@
 package com.cdbbbsp.www.Entity.Event.Bean;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +10,7 @@ import java.util.List;
  * 创建时间 2017/7/13-15:00
  */
 
-public class AllGoodsBean {
+public class AllGoodsBean implements Serializable{
 
     /**
      * success : 1
@@ -33,7 +36,7 @@ public class AllGoodsBean {
         this.data = data;
     }
 
-    public static class GoodsBean {
+    public static class GoodsBean implements Serializable{
         /**
          * goodsid : 28683b2f-7157-4ae1-aa95-160d6149bdf0
          * title : 饭烧光
@@ -68,7 +71,7 @@ public class AllGoodsBean {
             this.imgs = imgs;
         }
 
-        public static class ImgsBean {
+        public static class ImgsBean implements Serializable {
             /**
              * path : /img/d1c24950-_1499932857343.jpg
              */

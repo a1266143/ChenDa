@@ -1,5 +1,7 @@
 package com.cdbbbsp.www.Fragment.Presenter;
 
+import android.util.Log;
+
 import com.cdbbbsp.www.Fragment.View.IView;
 import com.cdbbbsp.www.Entity.Event.Bean.AllGoodsBean;
 import com.cdbbbsp.www.Utils.MyUtils;
@@ -39,6 +41,7 @@ public class BaseFragmentPresenter {
     }
 
     public void loadMore(String categoryid,int page){//上拉加载更多
+        Log.e("xiaojun","调用了上拉加载更多");
         Map<String,String> params = new HashMap<>();
         params.put("categoryid",categoryid);
         params.put("start",""+page);

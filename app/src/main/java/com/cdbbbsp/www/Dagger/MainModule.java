@@ -46,7 +46,7 @@ public class MainModule {
         // 设置触摸屏幕的模式
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         menu.setShadowWidth(10);
-        //menu.setShadowDrawable(R.drawable.shadow);
+        menu.setShadowDrawable(R.drawable.shadow);
         // 设置滑动菜单视图的宽度
         menu.setBehindOffset(MyUtils.getInstance().dip2px(context,200));
         // 设置渐入渐出效果的值

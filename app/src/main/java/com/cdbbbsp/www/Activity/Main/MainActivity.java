@@ -1,19 +1,22 @@
 package com.cdbbbsp.www.Activity.Main;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cdbbbsp.www.Activity.Cart.CartActivity;
 import com.cdbbbsp.www.Activity.Main.Presenter.MainPresenter;
 import com.cdbbbsp.www.Activity.Main.View.IView;
 import com.cdbbbsp.www.Dagger.DaggerMainComponent;
@@ -24,7 +27,9 @@ import com.cdbbbsp.www.Entity.Event.MenuEvent;
 import com.cdbbbsp.www.Entity.Event.Refresh;
 import com.cdbbbsp.www.Fragment.BaseFragment;
 import com.cdbbbsp.www.R;
+import com.cdbbbsp.www.Utils.FastBlurUtil;
 import com.cdbbbsp.www.Utils.MyUtils;
+import com.cdbbbsp.www.Utils.StaticCode;
 import com.jaeger.library.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
@@ -39,11 +44,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.blurry.Blurry;
 
 import static android.view.View.GONE;
 
 public class MainActivity extends SlidingActivity implements IView {
 
+    public static Bitmap staticImage;
     @Inject
     SlidingMenu menu;
     @Inject
@@ -53,6 +60,7 @@ public class MainActivity extends SlidingActivity implements IView {
     @Inject
     MainPresenter mPresenter;
 
+
     @BindView(R.id.sliding_left_layout_listview)
     ListView slidingListView;
 
@@ -61,7 +69,6 @@ public class MainActivity extends SlidingActivity implements IView {
     private TextView tv_neterror;
     private MainModule.SlidingBaseAdapter adapter;
     private AllCategoryBean bean;
-    private int currentFragment;
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -71,8 +78,10 @@ public class MainActivity extends SlidingActivity implements IView {
 
     @Subscribe
     public void cartBeClick(CartEvent cartEvent) {//购物车被点击
-        Toast.makeText(this, "你点击了购物车", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this,CartActivity.class));
+        if (StaticCode.staticList == null || StaticCode.staticList.size() == 0)
+            Toast.makeText(this, "购物车还没有任何商品", Toast.LENGTH_SHORT).show();
+        else
+            startActivity(new Intent(this, CartActivity.class));
     }
 
     @Subscribe
@@ -86,7 +95,7 @@ public class MainActivity extends SlidingActivity implements IView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        StatusBarUtil.setTransparent(this);
+        StatusBarUtil.setColor(this, Color.parseColor("#3cba92"));
         setEventBus();
         setDagger();
         setButterKnife();
@@ -94,6 +103,34 @@ public class MainActivity extends SlidingActivity implements IView {
         findCurrentLayoutView();
         getAllCategory();//请求分类
 
+
+        //Blurry.with(MainActivity.this).async().radius(100).from(getCapture(fm)).into(iv);
+
+    }
+
+    private ImageView iv;
+
+    public void blur() {
+        final FrameLayout fm = (FrameLayout) findViewById(R.id.fm);
+        staticImage = FastBlurUtil.toBlur(getCapture(fm), 10);
+        //iv.setImageBitmap(FastBlurUtil.toBlur(getCapture(fm),10));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    private Bitmap getCapture(View v) {
+        View view = v.getRootView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        Bitmap bitmap = view.getDrawingCache();
+        if (bitmap != null)
+            return bitmap;
+        else
+            throw new NullPointerException("bitmap为null");
     }
 
     private void getAllCategory() {
@@ -120,6 +157,7 @@ public class MainActivity extends SlidingActivity implements IView {
     }
 
     private void findCurrentLayoutView() {
+        iv = (ImageView) findViewById(R.id.iv);
         iv_menu = (ImageView) findViewById(R.id.activity_main_menu);
         loadingLayout = (LinearLayout) findViewById(R.id.activity_main_loadinglayout);
         tv_neterror = (TextView) findViewById(R.id.activity_main_tvNeterror);
@@ -153,10 +191,10 @@ public class MainActivity extends SlidingActivity implements IView {
     public void getCategoryData(final AllCategoryBean bean) {//获取到了所有类别
         iv_menu.setEnabled(true);
         loadingLayout.setVisibility(GONE);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         if (bean != null && bean.getSuccess().equals("1")) {
             this.bean = bean;
-            menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+            menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
             loadingLayout.setVisibility(GONE);
             List<AllCategoryBean.CategoryBean> list = bean.getData();
             if (list.size() != 0) {
@@ -180,31 +218,6 @@ public class MainActivity extends SlidingActivity implements IView {
         }
 
     }
-
-    private void setTran(){
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        //如果android版本是5.0及以上
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-            //设置华为等虚拟按键bar的颜色
-            window.setNavigationBarColor(Color.parseColor("#50000000"));
-        }
-        //如果版本是android4.4
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
-
 
 
 }

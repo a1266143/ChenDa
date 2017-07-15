@@ -46,6 +46,7 @@
                 android:id="@+id/listitem_layout_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/listitem_layout_add"
                 android:ellipsize="end"

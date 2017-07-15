@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cdbbbsp.www.Activity.InfoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp">
+
+        <com.cdbbbsp.www.CustomView.LinearGradientView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <com.cdbbbsp.www.CustomView.LinearGradientView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:id="@+id/activity_info_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            android:padding="12dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_nav_arrow_left"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white"
+            android:text="填写信息"/>
+
+        <TextView
+            android:id="@+id/activity_info_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:textSize="17dp"
+            android:text="提交"/>
+
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/activity_info_edtName"
+        android:hint="请输入姓名"
+        style="@style/activity_info_edittextstyle" />
+
+    <View style="@style/activity_info_viewstyle" />
+
+    <EditText
+        android:id="@+id/activity_info_edtPhone"
+        android:hint="请输入电话"
+        android:inputType="phone"
+        style="@style/activity_info_edittextstyle" />
+
+    <View style="@style/activity_info_viewstyle" />
+
+    <EditText
+        android:id="@+id/activity_info_edtAdd"
+        android:hint="请输入收货地址"
+        style="@style/activity_info_edittextstyle" />
+
+    <View style="@style/activity_info_viewstyle" />
+
+
+
+
+</LinearLayout>

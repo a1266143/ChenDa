@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cdbbbsp.www.Activity.SuccessActivity">
+
+<com.cdbbbsp.www.CustomView.LinearGradientViewSuc
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/activity_success_iv"
+        android:layout_width="245dp"
+        android:layout_height="245dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_post_done_success"/>
+
+    <TextView
+        android:id="@+id/activity_success_tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_success_iv"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="40dp"
+        android:textSize="24dp"
+        android:layout_centerHorizontal="true"
+        android:text="订单提交成功"
+        />
+
+    <TextView
+        android:id="@+id/activity_success_tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        android:layout_below="@id/activity_success_tv1"
+        android:layout_centerHorizontal="true"
+        android:text="稍后客服将与您电话联系"/>
+
+
+    <TextView
+        android:id="@+id/activity_success_tvBack"
+        android:layout_width="176dp"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:layout_below="@id/activity_success_tv2"
+        android:textSize="17dp"
+        android:textColor="@android:color/white"
+        android:text="返回"
+        android:background="@drawable/rect"/>
+    
+</RelativeLayout>

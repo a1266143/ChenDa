@@ -31,5 +31,8 @@ public class StaticCode {
     public static final String allCategoryUrl = baseUrl + "/cdagriculture/category/allCategory.do";
     //分类下的具体商品url
     public static final String pageGoodsUrl = baseUrl + "/cdagriculture/goods/pageGoods.do";
-
+    //图片前缀
+    public static final String imagePrefix = "https://test.buoou.com/upload";
+    //提交订单
+    public static final String commitUrl = baseUrl+"/cdagriculture/order/addOrder.do";
 }
