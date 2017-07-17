@@ -225,7 +225,7 @@ public class MainActivity extends SlidingActivity implements IView {
                 }
                     AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
                     //设置动画持续时长
-                    alphaAnimation.setDuration(300);
+                    alphaAnimation.setDuration(100);
                     //设置动画结束之后的状态是否是动画的最终状态，true，表示是保持动画结束时的最终状态
                     alphaAnimation.setFillAfter(true);
                     fm_shadow.startAnimation(alphaAnimation);
