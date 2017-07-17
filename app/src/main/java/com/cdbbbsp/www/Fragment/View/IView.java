@@ -1,6 +1,7 @@
 package com.cdbbbsp.www.Fragment.View;
 
 import com.cdbbbsp.www.Entity.Event.Bean.AllGoodsBean;
+import com.zhy.http.okhttp.request.RequestCall;
 
 /**
  * 创建人 xiaojun
@@ -8,8 +9,8 @@ import com.cdbbbsp.www.Entity.Event.Bean.AllGoodsBean;
  */
 
 public interface IView {
-    void getFirstData(AllGoodsBean bean);
+    void getFirstData(AllGoodsBean bean, RequestCall call);
     void getFirstNetError();
-    void loadMoreData(AllGoodsBean bean);
+    void loadMoreData(AllGoodsBean bean,RequestCall call);
     void loadMoreError();//加载更多失败
 }

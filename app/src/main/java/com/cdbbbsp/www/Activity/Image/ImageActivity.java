@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.blurry.Blurry;
 
 public class ImageActivity extends Activity {
@@ -48,13 +49,16 @@ public class ImageActivity extends Activity {
     RelativeLayout re;
     @BindView(R.id.activity_image_backimg)
     ImageView backImage;
+    @OnClick(R.id.activity_image_backback)
+    void backback(){
+        finish();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
         ButterKnife.bind(this);
         if (MainActivity.staticImage!=null)
-
             backImage.setImageBitmap(MainActivity.staticImage);
         //获取传送过来的Bean
         currentBean = (AllGoodsBean.GoodsBean) getIntent().getExtras().getSerializable(TAG);

@@ -19,6 +19,7 @@
         android:background="#80000000"/>
 
     <ImageView
+        android:id="@+id/activity_image_backback"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#80000000"/>

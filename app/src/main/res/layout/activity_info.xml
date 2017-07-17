@@ -57,6 +57,7 @@
     <EditText
         android:id="@+id/activity_info_edtName"
         android:hint="请输入姓名"
+        android:lines="1"
         style="@style/activity_info_edittextstyle" />
 
     <View style="@style/activity_info_viewstyle" />
@@ -69,10 +70,20 @@
 
     <View style="@style/activity_info_viewstyle" />
 
-    <EditText
-        android:id="@+id/activity_info_edtAdd"
-        android:hint="请输入收货地址"
-        style="@style/activity_info_edittextstyle" />
+        <EditText
+            android:id="@+id/activity_info_edtAdd"
+            android:hint="请输入收货地址"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:textSize="17dp"
+            android:textColor="#454545"
+            android:background="@android:color/transparent"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            />
 
     <View style="@style/activity_info_viewstyle" />
 

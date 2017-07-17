@@ -7,6 +7,7 @@ import com.cdbbbsp.www.Entity.Event.Bean.AllGoodsBean;
 import com.cdbbbsp.www.Utils.MyUtils;
 import com.cdbbbsp.www.Utils.StaticCode;
 import com.google.gson.Gson;
+import com.zhy.http.okhttp.request.RequestCall;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,8 @@ import java.util.Map;
 
 public class BaseFragmentPresenter {
     private IView iView;
+    private RequestCall call;
+
     public BaseFragmentPresenter(IView iView){
         this.iView = iView;
     }
@@ -26,11 +29,11 @@ public class BaseFragmentPresenter {
         Map<String,String> params = new HashMap<>();
         params.put("categoryid",categoryid);
         params.put("start",""+page);
-        MyUtils.getInstance().doGet(StaticCode.pageGoodsUrl,params, new MyUtils.NetCallback() {
+        call = MyUtils.getInstance().doGet(StaticCode.pageGoodsUrl,params, new MyUtils.NetCallback() {
             @Override
             public void getData(String json) {
                 AllGoodsBean bean = new Gson().fromJson(json,AllGoodsBean.class);
-                iView.getFirstData(bean);
+                iView.getFirstData(bean,call);
             }
 
             @Override
@@ -41,15 +44,14 @@ public class BaseFragmentPresenter {
     }
 
     public void loadMore(String categoryid,int page){//上拉加载更多
-        Log.e("xiaojun","调用了上拉加载更多");
         Map<String,String> params = new HashMap<>();
         params.put("categoryid",categoryid);
         params.put("start",""+page);
-        MyUtils.getInstance().doGet(StaticCode.pageGoodsUrl,params, new MyUtils.NetCallback(){
+        call = MyUtils.getInstance().doGet(StaticCode.pageGoodsUrl,params, new MyUtils.NetCallback(){
             @Override
             public void getData(String json) {
                 AllGoodsBean bean = new Gson().fromJson(json,AllGoodsBean.class);
-                iView.loadMoreData(bean);
+                iView.loadMoreData(bean,call);
             }
 
             @Override

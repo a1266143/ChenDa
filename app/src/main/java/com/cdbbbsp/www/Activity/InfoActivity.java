@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -69,7 +70,15 @@ public class InfoActivity extends AppCompatActivity {
         setTran();
         setContentView(R.layout.activity_info);
         ButterKnife.bind(this);
-
+        edt_addr.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE)
+                    return true;
+                else
+                    return false;
+            }
+        });
     }
 
     private void commitGoods(String name, String phone, String addr) {
@@ -112,6 +121,8 @@ public class InfoActivity extends AppCompatActivity {
         String goodsids = new Gson().toJson(CartActivity.realList);
         String countids = new Gson().toJson(CartActivity.numberList);
         params.put("goodsids[]", "fdsf");
+        countids = countids.replace("[","");
+        countids = countids.replace("]","");
         params.put("countids[]", countids);
         Log.e("goodsids", goodsids);
         Log.e("countids", countids);

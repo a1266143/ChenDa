@@ -20,7 +20,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="64dp"
             >
 
             <com.cdbbbsp.www.CustomView.LinearGradientView android:layout_width="match_parent"
@@ -32,6 +32,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="12dp"
+                android:layout_centerVertical="true"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_nav_menu"/>
 
@@ -41,6 +42,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:padding="12dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_nav_bag"/>
@@ -101,4 +103,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"/>
+
+    <FrameLayout
+        android:id="@+id/activity_main_fmshadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/slidingback"/>
 </FrameLayout>

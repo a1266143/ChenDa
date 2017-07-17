@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.request.RequestCall;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -91,8 +92,9 @@ public class MyUtils {
     }
 
     //get请求
-    public  void doGet(String url, Map<String, String> params, final NetCallback callback) {
-        OkHttpUtils.get().params(params).url(url).build().execute(new StringCallback() {
+    public  RequestCall doGet(String url, Map<String, String> params, final NetCallback callback) {
+        RequestCall call = OkHttpUtils.get().params(params).url(url).build();
+        call.execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 callback.getError(e);
@@ -103,6 +105,7 @@ public class MyUtils {
                 callback.getData(response);
             }
         });
+        return call;
     }
 
     //post请求

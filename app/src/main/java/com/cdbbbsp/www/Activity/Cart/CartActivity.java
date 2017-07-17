@@ -93,11 +93,7 @@ public class CartActivity extends AppCompatActivity {
         }
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        //manager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(manager);
-        //recyclerView.setLoadingMoreEnabled(true);
-        //recyclerView.setRefreshProgressStyle(ProgressStyle.Pacman);
-        //recyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
 
 
         recyclerView.setAdapter(new CommonAdapter<AllGoodsBean.GoodsBean>(this,R.layout.listitem_cart, realList) {

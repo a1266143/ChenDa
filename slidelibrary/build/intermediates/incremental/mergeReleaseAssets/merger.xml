@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\ChenDa\slidelibrary\src\main\assets"/><source path="E:\ChenDa\slidelibrary\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="E:\ChenDa\slidelibrary\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="H:\Chen\slidelibrary\src\main\assets"/><source path="H:\Chen\slidelibrary\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="H:\Chen\slidelibrary\src\release\assets"/></dataSet></merger>

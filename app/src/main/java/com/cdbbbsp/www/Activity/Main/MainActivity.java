@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -47,6 +49,7 @@ import butterknife.ButterKnife;
 import jp.wasabeef.blurry.Blurry;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends SlidingActivity implements IView {
 
@@ -69,6 +72,7 @@ public class MainActivity extends SlidingActivity implements IView {
     private TextView tv_neterror;
     private MainModule.SlidingBaseAdapter adapter;
     private AllCategoryBean bean;
+    private FrameLayout fm_shadow;
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -170,6 +174,14 @@ public class MainActivity extends SlidingActivity implements IView {
                 showFragment(position);
             }
         });
+        fm_shadow = (FrameLayout) findViewById(R.id.activity_main_fmshadow);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+        //设置动画持续时长
+        alphaAnimation.setDuration(10);
+        //设置动画结束之后的状态是否是动画的最终状态，true，表示是保持动画结束时的最终状态
+        alphaAnimation.setFillAfter(true);
+        fm_shadow.startAnimation(alphaAnimation);
+        fm_shadow.startAnimation(alphaAnimation);
     }
 
     private void showFragment(int position) {
@@ -177,7 +189,7 @@ public class MainActivity extends SlidingActivity implements IView {
     }
 
     private void setFragment(String categoryid) {
-        getFragmentManager().beginTransaction().replace(R.id.activity_main_content, new BaseFragment(categoryid)).commitAllowingStateLoss();
+        getFragmentManager().beginTransaction().replace(R.id.activity_main_content, BaseFragment.newInstance(categoryid)).commitAllowingStateLoss();
 
     }
 
@@ -192,9 +204,36 @@ public class MainActivity extends SlidingActivity implements IView {
         iv_menu.setEnabled(true);
         loadingLayout.setVisibility(GONE);
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+            @Override
+            public void onOpened() {
+                if (fm_shadow.getAnimation()!=null)
+                    fm_shadow.clearAnimation();
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+                    //设置动画持续时长
+                    alphaAnimation.setDuration(300);
+                    //设置动画结束之后的状态是否是动画的最终状态，true，表示是保持动画结束时的最终状态
+                    alphaAnimation.setFillAfter(true);
+                    fm_shadow.startAnimation(alphaAnimation);
+            }
+        });
+        menu.setOnClosedListener(new SlidingMenu.OnClosedListener() {
+            @Override
+            public void onClosed() {
+                if (fm_shadow.getAnimation()!=null){
+                    fm_shadow.clearAnimation();
+                }
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+                    //设置动画持续时长
+                    alphaAnimation.setDuration(300);
+                    //设置动画结束之后的状态是否是动画的最终状态，true，表示是保持动画结束时的最终状态
+                    alphaAnimation.setFillAfter(true);
+                    fm_shadow.startAnimation(alphaAnimation);
+            }
+        });
         if (bean != null && bean.getSuccess().equals("1")) {
             this.bean = bean;
-            menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            //menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
             loadingLayout.setVisibility(GONE);
             List<AllCategoryBean.CategoryBean> list = bean.getData();
             if (list.size() != 0) {
@@ -219,5 +258,34 @@ public class MainActivity extends SlidingActivity implements IView {
 
     }
 
-
+    private boolean isBack = false;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(isBack == false){
+                Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            isBack = true;
+                            Thread.sleep(2000);
+                            isBack = false;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }else{
+                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.exit(0);
+                    }
+                },500);
+            }
+        }
+        return true;
+    }
 }
